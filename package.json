@@ -19,18 +19,28 @@
     "watch": "tsc --watch",
     "start": "node dist/index.js",
     "start:dev": "tsx src/index.ts",
+    "start:websocket": "node dist/index.js --websocket",
+    "start:websocket:dev": "tsx src/index.ts --websocket",
+    "start:sse": "node dist/index.js --sse",
+    "start:sse:dev": "tsx src/index.ts --sse",
     "auth": "node dist/index.js auth",
     "auth:dev": "tsx src/index.ts auth",
+    "docker:build": "docker build -t mcp-gdrive .",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
     "clean": "rimraf dist"
   },
   "dependencies": {
     "@google-cloud/local-auth": "^3.0.1",
     "@modelcontextprotocol/sdk": "1.0.1",
     "googleapis": "^144.0.0",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "ws": "^8.14.2"
   },
   "devDependencies": {
     "@types/node": "^22",
+    "@types/ws": "^8.5.8",
     "shx": "^0.3.4",
     "typescript": "^5.6.2",
     "tsx": "^4.7.0",

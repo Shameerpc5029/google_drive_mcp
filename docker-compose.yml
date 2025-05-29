@@ -1,0 +1,45 @@
+services:
+  mcp-gdrive:
+    build: .
+    container_name: mcp-gdrive-server
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./docker-volumes/credentials:/app/credentials
+      - ./docker-volumes/logs:/app/logs
+      - ./.env:/app/.env:ro
+    environment:
+      - NODE_ENV=production
+      - MCP_LOG_LEVEL=info
+      - MCP_TRANSPORT=sse
+      - PORT=3000
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - mcp-network
+
+  # Optional: Run MCP Inspector alongside your server
+  # Uncomment this section if you want to run inspector in Docker too
+  # mcp-inspector:
+  #   image: node:18-alpine
+  #   container_name: mcp-inspector
+  #   ports:
+  #     - "3001:3001"
+  #   command: >
+  #     sh -c "npm install -g @modelcontextprotocol/inspector && 
+  #            npx @modelcontextprotocol/inspector --port 3001"
+  #   depends_on:
+  #     - mcp-gdrive
+  #   networks:
+  #     - mcp-network
+
+networks:
+  mcp-network:
+    driver: bridge
